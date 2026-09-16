@@ -9,14 +9,14 @@
 <title>Bóveda</title>
 <style>
   :root {
-    --bg: #12151B;
-    --surface: #1B2028;
-    --surface-2: #232A34;
-    --border: #313A47;
-    --text: #E9E7E1;
-    --text-dim: #8B93A1;
-    --accent: #C9A227;
-    --accent-dim: #8A7020;
+    --bg: #121014;
+    --surface: #1C1A1E;
+    --surface-2: #262329;
+    --border: #322E33;
+    --text: #F2F0EC;
+    --text-dim: #8D8A90;
+    --accent: #A8434E;
+    --accent-dim: #7A2F38;
     --danger: #C9573B;
     --danger-dim: #7A3729;
     --radius: 10px;
@@ -31,8 +31,8 @@
     --border: #D8D2C4;
     --text: #23201A;
     --text-dim: #6B6659;
-    --accent: #96751A;
-    --accent-dim: #C9A227;
+    --accent: #8C2F39;
+    --accent-dim: #A8434E;
     --danger: #A8432B;
     --danger-dim: #C9573B;
   }
@@ -44,8 +44,8 @@
       --border: #D8D2C4;
       --text: #23201A;
       --text-dim: #6B6659;
-      --accent: #96751A;
-      --accent-dim: #C9A227;
+      --accent: #8C2F39;
+      --accent-dim: #A8434E;
       --danger: #A8432B;
       --danger-dim: #C9573B;
     }
@@ -111,7 +111,7 @@
     background: var(--accent);
     border: none;
     border-radius: var(--radius);
-    color: #14110A;
+    color: #F7F0F0;
     font-size: 16px;
     font-weight: 600;
     margin-top: 4px;
@@ -122,29 +122,36 @@
     font-size: 13px;
     min-height: 18px;
   }
-  .lock-toggle {
-    background: none; border: none; color: var(--text-dim);
-    font-size: 13px; text-decoration: underline; margin-top: 18px;
-  }
 
   /* ---------- App shell ---------- */
   #app { display: none; min-height: 100vh; min-height: 100dvh; flex-direction: column; }
   header.topbar {
     position: sticky; top: 0; z-index: 5;
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; gap: 10px;
     padding: 16px 18px calc(14px + env(safe-area-inset-top)) 18px;
     margin-top: calc(-1 * env(safe-area-inset-top));
     padding-top: calc(16px + env(safe-area-inset-top));
     background: var(--bg);
     border-bottom: 1px solid var(--border);
   }
+  .back-btn {
+    background: none; border: none; color: var(--text-dim);
+    font-size: 22px; padding: 0 4px 0 0; line-height: 1; flex-shrink: 0;
+    display: none;
+  }
+  .back-btn.show { display: block; }
   header.topbar h1 {
     font-family: var(--font-display);
-    font-size: 21px;
+    font-size: 20px;
     margin: 0;
     letter-spacing: 0.01em;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .topbar-actions { display: flex; gap: 8px; }
+  .topbar-actions { display: flex; gap: 8px; flex-shrink: 0; }
   .icon-btn {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -165,76 +172,91 @@
   }
   .empty-state p { font-size: 14px; line-height: 1.6; max-width: 260px; margin: 0 auto; }
 
-  .card {
+  /* ---------- Folder / card list rows (title-only) ---------- */
+  .list-item {
+    display: flex; align-items: center; gap: 12px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    margin-bottom: 14px;
-    overflow: hidden;
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 14px;
+    margin-bottom: 10px;
   }
-  .card-head {
-    display: flex; align-items: center; gap: 8px;
-    padding: 14px 14px 10px;
-    border-bottom: 1px solid var(--border);
+  .list-item-main { flex: 1; min-width: 0; background: none; border: none; text-align: left; padding: 0; }
+  .list-item-title {
+    font-weight: 700; font-size: 15px; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .card-title {
-    flex: 1;
+  .list-item-sub {
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);
+    margin-top: 3px; letter-spacing: 0.02em;
+  }
+  .list-item-chevron { color: var(--text-dim); flex-shrink: 0; }
+  .list-item-del {
+    background: none; border: none; color: var(--text-dim);
+    font-size: 16px; padding: 4px 4px; flex-shrink: 0;
+  }
+
+  /* ---------- Card detail ---------- */
+  .card-title-input {
+    width: 100%;
     background: transparent;
     border: none;
     color: var(--text);
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 22px;
+    padding: 4px 2px;
+    margin-bottom: 18px;
+  }
+  .card-title-input:focus { outline: none; }
+
+  .rows { }
+  .row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .row-top { display: flex; align-items: center; gap: 8px; }
+  .row-label {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px;
+    min-width: 0;
+  }
+  .row-value-wrap { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .row-value {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 15px;
     padding: 4px 2px;
     min-width: 0;
   }
-  .card-title:focus { outline: none; background: var(--surface-2); border-radius: 6px; }
-  .card-del {
-    background: none; border: none; color: var(--text-dim);
-    font-size: 18px; padding: 4px 6px; line-height: 1;
-  }
-
-  .rows { padding: 6px 10px 10px; }
-  .row {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 4px;
-    border-bottom: 1px solid var(--border);
-  }
-  .row:last-child { border-bottom: none; }
-  .row-label {
-    width: 34%;
-    flex-shrink: 0;
-    background: transparent;
-    border: none;
-    color: var(--text-dim);
-    font-size: 13px;
-    padding: 6px 4px;
-    min-width: 0;
-  }
-  .row-value {
-    flex: 1;
-    background: var(--surface-2);
-    border: 1px solid transparent;
-    border-radius: 7px;
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 14px;
-    padding: 7px 9px;
-    min-width: 0;
-    -webkit-text-security: disc;
-  }
-  .row-value.revealed { -webkit-text-security: none; }
-  .row-label:focus, .row-value:focus { outline: none; border-color: var(--accent); }
+  .row-label:focus, .row-value:focus { outline: none; }
   .row-btn {
     background: none; border: none; color: var(--text-dim);
     font-size: 15px; padding: 4px 5px; flex-shrink: 0;
   }
+  .row-btn.copied { color: var(--accent); }
 
-  .add-row-btn {
+  .add-row-btn, .add-item-btn {
     display: block; width: 100%;
-    background: none; border: none;
-    color: var(--accent);
-    font-size: 13px; padding: 10px 8px 8px;
-    text-align: left;
+    background: none; border: 1px dashed var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-size: 13px; padding: 12px 8px;
+    text-align: center;
+    margin-top: 4px;
   }
 
   .fab-wrap {
@@ -247,7 +269,7 @@
   .fab {
     pointer-events: auto;
     background: var(--accent);
-    color: #14110A;
+    color: #F7F0F0;
     border: none;
     border-radius: 999px;
     padding: 14px 26px;
@@ -274,6 +296,8 @@
     padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
     border: 1px solid var(--border);
     border-bottom: none;
+    max-height: 85vh;
+    overflow-y: auto;
   }
   .sheet-handle {
     width: 36px; height: 4px; background: var(--border);
@@ -295,12 +319,46 @@
     flex: 1; padding: 13px; border-radius: 8px; border: none;
     font-size: 14px; font-weight: 600;
   }
-  .sheet-btn.primary { background: var(--accent); color: #14110A; }
+  .sheet-btn.primary { background: var(--accent); color: #F7F0F0; }
   .sheet-btn.ghost { background: var(--surface-2); color: var(--text); }
   .sheet-btn.danger { background: var(--danger-dim); color: #fff; }
   .sheet-msg { font-size: 13px; color: var(--danger); min-height: 16px; margin-top: 4px; }
   .sheet-note { font-size: 12px; color: var(--text-dim); line-height: 1.5; margin: 4px 0 4px; }
   hr.sheet-divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* ---------- Custom modals (native prompt/confirm/alert are unreliable here) ---------- */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 30;
+    background: rgba(0,0,0,0.55);
+    align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    width: 100%;
+    max-width: 340px;
+  }
+  .modal-box h3 { font-family: var(--font-display); font-size: 18px; margin: 0 0 12px; }
+  .modal-box p { font-size: 14px; color: var(--text-dim); line-height: 1.5; margin: 0 0 16px; }
+  .modal-row { display: flex; gap: 10px; margin-top: 16px; }
+  .modal-btn { flex: 1; padding: 12px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; }
+  .modal-btn.primary { background: var(--accent); color: #F7F0F0; }
+  .modal-btn.ghost { background: var(--surface-2); color: var(--text); }
+  .modal-btn.danger { background: var(--danger-dim); color: #fff; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%);
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); padding: 12px 20px; border-radius: 999px;
+    font-size: 13px; z-index: 40; opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .toast.show { opacity: 1; }
 
   #printArea { display: none; }
   @media print {
@@ -311,28 +369,14 @@
       font-family: Georgia, serif;
       padding: 0;
     }
-    #printArea h1 {
-      font-size: 20px; margin: 0 0 4px;
-    }
-    #printArea .print-date {
-      font-size: 11px; color: #555; margin: 0 0 20px;
-    }
-    #printArea .print-card {
-      break-inside: avoid;
-      margin-bottom: 18px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #ccc;
-    }
-    #printArea .print-card h2 {
-      font-size: 15px; margin: 0 0 6px;
-    }
-    #printArea .print-row {
-      display: flex; font-family: 'Courier New', monospace;
-      font-size: 12px; padding: 2px 0;
-    }
-    #printArea .print-row .lbl {
-      width: 140px; flex-shrink: 0; color: #444;
-    }
+    #printArea h1 { font-size: 20px; margin: 0 0 4px; }
+    #printArea .print-date { font-size: 11px; color: #555; margin: 0 0 20px; }
+    #printArea .print-folder { margin-bottom: 26px; }
+    #printArea .print-folder-name { font-size: 17px; font-weight: bold; margin: 0 0 8px; border-bottom: 1px solid #999; padding-bottom: 4px; }
+    #printArea .print-card { break-inside: avoid; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #ccc; }
+    #printArea .print-card h2 { font-size: 14px; margin: 0 0 6px; }
+    #printArea .print-row { display: flex; font-family: 'Courier New', monospace; font-size: 12px; padding: 2px 0; }
+    #printArea .print-row .lbl { width: 140px; flex-shrink: 0; color: #444; }
     #printArea .print-row .val { word-break: break-all; }
   }
 </style>
@@ -358,15 +402,16 @@
 
 <div id="app">
   <header class="topbar">
-    <h1>Bóveda</h1>
+    <button class="back-btn" id="backBtn">‹</button>
+    <h1 id="topTitle">Bóveda</h1>
     <div class="topbar-actions">
       <button class="icon-btn" id="settingsBtn" title="Ajustes">⚙</button>
       <button class="icon-btn" id="lockBtnTop" title="Bloquear">⏻</button>
     </div>
   </header>
-  <main id="cardsWrap"></main>
+  <main id="mainWrap"></main>
   <div class="fab-wrap">
-    <button class="fab" id="addCardBtn">+ Nueva tarjeta</button>
+    <button class="fab" id="fabBtn">+ Nueva carpeta</button>
   </div>
 </div>
 
@@ -384,27 +429,71 @@
       <button class="sheet-btn primary" id="savePwBtn">Guardar</button>
     </div>
     <hr class="sheet-divider">
+    <h2>Bloqueo automático</h2>
+    <p class="sheet-note">La bóveda se bloquea sola después de un rato sin uso.</p>
+    <select class="sheet-input" id="autoLockSelect" style="font-family: var(--font-body);">
+      <option value="60000">1 minuto</option>
+      <option value="120000">2 minutos</option>
+      <option value="300000">5 minutos</option>
+      <option value="600000">10 minutos</option>
+    </select>
+    <hr class="sheet-divider">
     <h2>Respaldo en papel</h2>
     <p class="sheet-note">Genera un documento con todo el contenido de tu bóveda, en texto plano, listo para imprimir. Guárdalo en un lugar físico seguro y destrúyelo si vuelves a generarlo (para no dejar copias viejas dando vueltas).</p>
     <button class="sheet-btn ghost" id="exportBtn" style="width:100%">Exportar e imprimir</button>
     <hr class="sheet-divider">
     <h2 style="color:var(--danger)">Borrar toda la bóveda</h2>
-    <p class="sheet-note">Elimina todas las tarjetas y contraseñas de este dispositivo de forma permanente.</p>
+    <p class="sheet-note">Elimina todas las carpetas y contraseñas de este dispositivo de forma permanente.</p>
     <button class="sheet-btn danger" id="wipeBtn" style="width:100%">Borrar todo</button>
   </div>
 </div>
 
 <div id="printArea"></div>
 
+<div class="modal-overlay" id="promptOverlay">
+  <div class="modal-box">
+    <h3 id="promptTitle">Título</h3>
+    <input type="text" class="sheet-input" id="promptInput" style="font-family: var(--font-body); margin-bottom: 0;">
+    <div class="modal-row">
+      <button class="modal-btn ghost" id="promptCancel">Cancelar</button>
+      <button class="modal-btn primary" id="promptOk">Crear</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirmOverlay">
+  <div class="modal-box">
+    <h3 id="confirmTitle">¿Confirmar?</h3>
+    <p id="confirmMsg"></p>
+    <div class="modal-row">
+      <button class="modal-btn ghost" id="confirmCancel">Cancelar</button>
+      <button class="modal-btn danger" id="confirmOk">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
 (function(){
   const LS_SALT = 'vault_salt_v1';
   const LS_VERIFY = 'vault_verify_v1';
   const LS_DATA = 'vault_data_v1';
+  const LS_AUTOLOCK = 'vault_autolock_ms';
 
   let cryptoKey = null;
-  let vault = { cards: [] };
+  let vault = { folders: [] };
   let isCreatingPassword = false;
+
+  // Navigation state
+  let view = 'folders'; // 'folders' | 'cards' | 'card'
+  let currentFolderId = null;
+  let currentCardId = null;
+
+  // Auto-lock
+  let autoLockMs = parseInt(localStorage.getItem(LS_AUTOLOCK) || '120000', 10);
+  let lastActivity = Date.now();
+  let autoLockInterval = null;
 
   const enc = new TextEncoder();
   const dec = new TextDecoder();
@@ -441,6 +530,84 @@
 
   function uid() { return Math.random().toString(36).slice(2, 10); }
 
+  // ---------- Custom modal helpers (replace native prompt/confirm/alert) ----------
+  const promptOverlay = document.getElementById('promptOverlay');
+  const promptTitle = document.getElementById('promptTitle');
+  const promptInput = document.getElementById('promptInput');
+  const promptOk = document.getElementById('promptOk');
+  const promptCancel = document.getElementById('promptCancel');
+
+  function showPrompt(title, placeholder, okLabel) {
+    return new Promise(resolve => {
+      promptTitle.textContent = title;
+      promptInput.value = '';
+      promptInput.placeholder = placeholder || '';
+      promptOk.textContent = okLabel || 'Crear';
+      promptOverlay.classList.add('open');
+      setTimeout(() => promptInput.focus(), 50);
+
+      function cleanup(result) {
+        promptOverlay.classList.remove('open');
+        promptOk.removeEventListener('click', onOk);
+        promptCancel.removeEventListener('click', onCancel);
+        promptInput.removeEventListener('keydown', onKeydown);
+        resolve(result);
+      }
+      function onOk() { cleanup(promptInput.value.trim() || null); }
+      function onCancel() { cleanup(null); }
+      function onKeydown(e) { if (e.key === 'Enter') onOk(); if (e.key === 'Escape') onCancel(); }
+
+      promptOk.addEventListener('click', onOk);
+      promptCancel.addEventListener('click', onCancel);
+      promptInput.addEventListener('keydown', onKeydown);
+    });
+  }
+
+  const confirmOverlay = document.getElementById('confirmOverlay');
+  const confirmTitle = document.getElementById('confirmTitle');
+  const confirmMsg = document.getElementById('confirmMsg');
+  const confirmOk = document.getElementById('confirmOk');
+  const confirmCancel = document.getElementById('confirmCancel');
+
+  function showConfirm(message, title, okLabel) {
+    return new Promise(resolve => {
+      confirmTitle.textContent = title || 'Confirmar';
+      confirmMsg.textContent = message;
+      confirmOk.textContent = okLabel || 'Eliminar';
+      confirmOverlay.classList.add('open');
+
+      function cleanup(result) {
+        confirmOverlay.classList.remove('open');
+        confirmOk.removeEventListener('click', onOk);
+        confirmCancel.removeEventListener('click', onCancel);
+        resolve(result);
+      }
+      function onOk() { cleanup(true); }
+      function onCancel() { cleanup(false); }
+
+      confirmOk.addEventListener('click', onOk);
+      confirmCancel.addEventListener('click', onCancel);
+    });
+  }
+
+  const toastEl = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(message) {
+    toastEl.textContent = message;
+    toastEl.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+  }
+
+  function migrateVault(v) {
+    // Old shape was { cards: [...] } with no folders. Wrap it.
+    if (!v.folders) {
+      const oldCards = Array.isArray(v.cards) ? v.cards : [];
+      v = { folders: oldCards.length ? [{ id: uid(), name: 'General', cards: oldCards }] : [] };
+    }
+    return v;
+  }
+
   async function saveVault() {
     try {
       const packed = await encryptJSON(cryptoKey, vault);
@@ -448,6 +615,15 @@
     } catch (e) {
       console.error('No se pudo guardar', e);
     }
+  }
+
+  function getCurrentFolder() {
+    return vault.folders.find(f => f.id === currentFolderId) || null;
+  }
+  function getCurrentCard() {
+    const folder = getCurrentFolder();
+    if (!folder) return null;
+    return folder.cards.find(c => c.id === currentCardId) || null;
   }
 
   // ---------- Lock screen logic ----------
@@ -496,7 +672,7 @@
         cryptoKey = await deriveKey(pw, saltB64);
         const verifier = await encryptJSON(cryptoKey, { ok: true });
         localStorage.setItem(LS_VERIFY, verifier);
-        vault = { cards: [] };
+        vault = { folders: [] };
         await saveVault();
         enterApp();
       } else {
@@ -505,7 +681,8 @@
         const verifier = localStorage.getItem(LS_VERIFY);
         await decryptJSON(cryptoKey, verifier); // throws if wrong password
         const dataPacked = localStorage.getItem(LS_DATA);
-        vault = dataPacked ? await decryptJSON(cryptoKey, dataPacked) : { cards: [] };
+        const rawVault = dataPacked ? await decryptJSON(cryptoKey, dataPacked) : { folders: [] };
+        vault = migrateVault(rawVault);
         enterApp();
       }
     } catch (err) {
@@ -520,88 +697,246 @@
   function enterApp() {
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
-    renderCards();
+    view = 'folders'; currentFolderId = null; currentCardId = null;
+    render();
+    startAutoLockWatch();
   }
 
   function lockApp() {
     cryptoKey = null;
-    vault = { cards: [] };
+    vault = { folders: [] };
+    view = 'folders'; currentFolderId = null; currentCardId = null;
     document.getElementById('app').style.display = 'none';
     document.getElementById('lockScreen').style.display = 'flex';
     initLockScreen();
+    stopAutoLockWatch();
   }
 
-  // ---------- Card rendering ----------
-  const cardsWrap = document.getElementById('cardsWrap');
+  // ---------- Auto-lock by inactivity ----------
+  function markActivity() { lastActivity = Date.now(); }
+  ['pointerdown', 'keydown', 'touchstart', 'input'].forEach(evt => {
+    document.addEventListener(evt, markActivity, { passive: true });
+  });
 
-  function renderCards() {
-    cardsWrap.innerHTML = '';
-    if (vault.cards.length === 0) {
+  function startAutoLockWatch() {
+    markActivity();
+    stopAutoLockWatch();
+    autoLockInterval = setInterval(checkAutoLock, 5000);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+  }
+  function stopAutoLockWatch() {
+    if (autoLockInterval) clearInterval(autoLockInterval);
+    autoLockInterval = null;
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+  }
+  function onVisibilityChange() {
+    if (!document.hidden) checkAutoLock();
+  }
+  function checkAutoLock() {
+    if (cryptoKey && Date.now() - lastActivity > autoLockMs) {
+      lockApp();
+    }
+  }
+
+  const autoLockSelect = document.getElementById('autoLockSelect');
+  autoLockSelect.value = String(autoLockMs);
+  autoLockSelect.addEventListener('change', () => {
+    autoLockMs = parseInt(autoLockSelect.value, 10);
+    localStorage.setItem(LS_AUTOLOCK, String(autoLockMs));
+    markActivity();
+  });
+
+  // ---------- Rendering ----------
+  const mainWrap = document.getElementById('mainWrap');
+  const topTitle = document.getElementById('topTitle');
+  const backBtn = document.getElementById('backBtn');
+  const fabBtn = document.getElementById('fabBtn');
+
+  function render() {
+    if (view === 'folders') renderFoldersView();
+    else if (view === 'cards') renderCardsView();
+    else if (view === 'card') renderCardDetailView();
+  }
+
+  function renderFoldersView() {
+    backBtn.classList.remove('show');
+    topTitle.textContent = 'Bóveda';
+    fabBtn.textContent = '+ Nueva carpeta';
+    mainWrap.innerHTML = '';
+
+    if (vault.folders.length === 0) {
       const empty = document.createElement('div');
       empty.className = 'empty-state';
-      empty.innerHTML = '<p>Todavía no hay tarjetas. Usa "Nueva tarjeta" para guardar tu primer conjunto de datos.</p>';
-      cardsWrap.appendChild(empty);
+      empty.innerHTML = '<p>Todavía no hay carpetas. Usa "Nueva carpeta" para empezar a organizar tus tarjetas (por ejemplo: Correo, Trabajo, Redes Sociales).</p>';
+      mainWrap.appendChild(empty);
       return;
     }
-    vault.cards.forEach(card => cardsWrap.appendChild(buildCardEl(card)));
+
+    vault.folders.forEach(folder => {
+      const el = document.createElement('div');
+      el.className = 'list-item';
+
+      const main = document.createElement('button');
+      main.className = 'list-item-main';
+      main.innerHTML = `<div class="list-item-title"></div><div class="list-item-sub"></div>`;
+      main.querySelector('.list-item-title').textContent = folder.name || 'Sin nombre';
+      main.querySelector('.list-item-sub').textContent = `${folder.cards.length} tarjeta${folder.cards.length === 1 ? '' : 's'}`;
+      main.addEventListener('click', () => {
+        view = 'cards'; currentFolderId = folder.id;
+        render();
+      });
+
+      const chevron = document.createElement('span');
+      chevron.className = 'list-item-chevron';
+      chevron.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>';
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'list-item-del';
+      delBtn.textContent = '✕';
+      delBtn.title = 'Eliminar carpeta';
+      delBtn.addEventListener('click', async () => {
+        const ok = await showConfirm(`Se eliminará la carpeta "${folder.name}" y todas sus tarjetas.`, 'Eliminar carpeta');
+        if (ok) {
+          vault.folders = vault.folders.filter(f => f.id !== folder.id);
+          saveVault();
+          render();
+        }
+      });
+
+      el.appendChild(main);
+      el.appendChild(chevron);
+      el.appendChild(delBtn);
+      mainWrap.appendChild(el);
+    });
   }
 
-  function buildCardEl(card) {
-    const el = document.createElement('div');
-    el.className = 'card';
+  function renderCardsView() {
+    const folder = getCurrentFolder();
+    if (!folder) { view = 'folders'; return render(); }
 
-    const head = document.createElement('div');
-    head.className = 'card-head';
+    backBtn.classList.add('show');
+    topTitle.textContent = folder.name || 'Sin nombre';
+    fabBtn.textContent = '+ Nueva tarjeta';
+    mainWrap.innerHTML = '';
+
+    if (folder.cards.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.innerHTML = '<p>Esta carpeta está vacía. Usa "Nueva tarjeta" para guardar tu primer conjunto de datos aquí.</p>';
+      mainWrap.appendChild(empty);
+      return;
+    }
+
+    folder.cards.forEach(card => {
+      const el = document.createElement('div');
+      el.className = 'list-item';
+
+      const main = document.createElement('button');
+      main.className = 'list-item-main';
+      main.innerHTML = `<div class="list-item-title"></div><div class="list-item-sub"></div>`;
+      main.querySelector('.list-item-title').textContent = card.title || 'Sin título';
+      main.querySelector('.list-item-sub').textContent = `${card.rows.length} campo${card.rows.length === 1 ? '' : 's'}`;
+      main.addEventListener('click', () => {
+        view = 'card'; currentCardId = card.id;
+        render();
+      });
+
+      const chevron = document.createElement('span');
+      chevron.className = 'list-item-chevron';
+      chevron.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>';
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'list-item-del';
+      delBtn.textContent = '✕';
+      delBtn.title = 'Eliminar tarjeta';
+      delBtn.addEventListener('click', async () => {
+        const ok = await showConfirm('Se eliminará esta tarjeta y todo su contenido.', 'Eliminar tarjeta');
+        if (ok) {
+          folder.cards = folder.cards.filter(c => c.id !== card.id);
+          saveVault();
+          render();
+        }
+      });
+
+      el.appendChild(main);
+      el.appendChild(chevron);
+      el.appendChild(delBtn);
+      mainWrap.appendChild(el);
+    });
+  }
+
+  function renderCardDetailView() {
+    const folder = getCurrentFolder();
+    const card = getCurrentCard();
+    if (!folder || !card) { view = 'folders'; return render(); }
+
+    backBtn.classList.add('show');
+    topTitle.textContent = card.title || 'Tarjeta';
+    fabBtn.textContent = '+ Añadir campo';
+    mainWrap.innerHTML = '';
 
     const titleInput = document.createElement('input');
-    titleInput.className = 'card-title';
+    titleInput.className = 'card-title-input';
     titleInput.value = card.title;
     titleInput.placeholder = 'Título de la tarjeta';
-    titleInput.addEventListener('input', () => { card.title = titleInput.value; saveVault(); });
-
-    const delBtn = document.createElement('button');
-    delBtn.className = 'card-del';
-    delBtn.textContent = '✕';
-    delBtn.title = 'Eliminar tarjeta';
-    delBtn.addEventListener('click', () => {
-      if (confirm('¿Eliminar esta tarjeta y todo su contenido?')) {
-        vault.cards = vault.cards.filter(c => c.id !== card.id);
-        saveVault();
-        renderCards();
-      }
+    titleInput.addEventListener('input', () => {
+      card.title = titleInput.value;
+      topTitle.textContent = card.title || 'Tarjeta';
+      saveVault();
     });
-
-    head.appendChild(titleInput);
-    head.appendChild(delBtn);
-    el.appendChild(head);
+    mainWrap.appendChild(titleInput);
 
     const rowsWrap = document.createElement('div');
     rowsWrap.className = 'rows';
     card.rows.forEach(row => rowsWrap.appendChild(buildRowEl(card, row)));
-    el.appendChild(rowsWrap);
+    mainWrap.appendChild(rowsWrap);
 
-    const addRowBtn = document.createElement('button');
-    addRowBtn.className = 'add-row-btn';
-    addRowBtn.textContent = '+ Añadir fila';
-    addRowBtn.addEventListener('click', () => {
-      card.rows.push({ id: uid(), label: '', value: '' });
-      saveVault();
-      renderCards();
+    const delCardBtn = document.createElement('button');
+    delCardBtn.className = 'add-item-btn';
+    delCardBtn.style.color = 'var(--danger)';
+    delCardBtn.style.borderColor = 'var(--danger-dim)';
+    delCardBtn.textContent = 'Eliminar esta tarjeta';
+    delCardBtn.addEventListener('click', async () => {
+      const ok = await showConfirm('Se eliminará esta tarjeta y todo su contenido.', 'Eliminar tarjeta');
+      if (ok) {
+        folder.cards = folder.cards.filter(c => c.id !== card.id);
+        saveVault();
+        view = 'cards';
+        render();
+      }
     });
-    el.appendChild(addRowBtn);
-
-    return el;
+    mainWrap.appendChild(delCardBtn);
   }
 
   function buildRowEl(card, row) {
     const el = document.createElement('div');
     el.className = 'row';
 
+    const top = document.createElement('div');
+    top.className = 'row-top';
+
     const labelInput = document.createElement('input');
     labelInput.className = 'row-label';
     labelInput.value = row.label;
-    labelInput.placeholder = 'Campo';
+    labelInput.placeholder = 'CAMPO';
     labelInput.addEventListener('input', () => { row.label = labelInput.value; saveVault(); });
+
+    const delRowBtn = document.createElement('button');
+    delRowBtn.className = 'row-btn';
+    delRowBtn.textContent = '✕';
+    delRowBtn.title = 'Eliminar campo';
+    delRowBtn.addEventListener('click', () => {
+      card.rows = card.rows.filter(r => r.id !== row.id);
+      saveVault();
+      render();
+    });
+
+    top.appendChild(labelInput);
+    top.appendChild(delRowBtn);
+    el.appendChild(top);
+
+    const valueWrap = document.createElement('div');
+    valueWrap.className = 'row-value-wrap';
 
     const valueInput = document.createElement('input');
     valueInput.className = 'row-value';
@@ -612,35 +947,60 @@
     valueInput.spellcheck = false;
     valueInput.addEventListener('input', () => { row.value = valueInput.value; saveVault(); });
 
-    const revealBtn = document.createElement('button');
-    revealBtn.className = 'row-btn';
-    revealBtn.textContent = '👁';
-    revealBtn.title = 'Mostrar/ocultar';
-    revealBtn.addEventListener('click', () => {
-      valueInput.classList.toggle('revealed');
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'row-btn';
+    copyBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+    copyBtn.title = 'Copiar';
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(row.value || '');
+        copyBtn.classList.add('copied');
+        const prev = copyBtn.innerHTML;
+        copyBtn.innerHTML = '✓';
+        setTimeout(() => { copyBtn.innerHTML = prev; copyBtn.classList.remove('copied'); }, 1200);
+      } catch (e) {
+        showToast('No se pudo copiar. Selecciona el texto manualmente.');
+      }
     });
 
-    const delRowBtn = document.createElement('button');
-    delRowBtn.className = 'row-btn';
-    delRowBtn.textContent = '✕';
-    delRowBtn.title = 'Eliminar fila';
-    delRowBtn.addEventListener('click', () => {
-      card.rows = card.rows.filter(r => r.id !== row.id);
-      saveVault();
-      renderCards();
-    });
+    valueWrap.appendChild(valueInput);
+    valueWrap.appendChild(copyBtn);
+    el.appendChild(valueWrap);
 
-    el.appendChild(labelInput);
-    el.appendChild(valueInput);
-    el.appendChild(revealBtn);
-    el.appendChild(delRowBtn);
     return el;
   }
 
-  document.getElementById('addCardBtn').addEventListener('click', () => {
-    vault.cards.unshift({ id: uid(), title: 'Nueva tarjeta', rows: [{ id: uid(), label: 'Usuario', value: '' }, { id: uid(), label: 'Contraseña', value: '' }] });
-    saveVault();
-    renderCards();
+  // ---------- Navigation buttons ----------
+  backBtn.addEventListener('click', () => {
+    if (view === 'card') { view = 'cards'; currentCardId = null; }
+    else if (view === 'cards') { view = 'folders'; currentFolderId = null; }
+    render();
+  });
+
+  fabBtn.addEventListener('click', async () => {
+    if (view === 'folders') {
+      const name = await showPrompt('Nueva carpeta', 'Ej. Correo, Trabajo, Redes Sociales', 'Crear');
+      if (name) {
+        vault.folders.unshift({ id: uid(), name: name, cards: [] });
+        saveVault();
+        render();
+      }
+    } else if (view === 'cards') {
+      const folder = getCurrentFolder();
+      if (!folder) return;
+      const newCard = { id: uid(), title: 'Nueva tarjeta', rows: [{ id: uid(), label: 'Usuario', value: '' }, { id: uid(), label: 'Contraseña', value: '' }] };
+      folder.cards.unshift(newCard);
+      saveVault();
+      currentCardId = newCard.id;
+      view = 'card';
+      render();
+    } else if (view === 'card') {
+      const card = getCurrentCard();
+      if (!card) return;
+      card.rows.push({ id: uid(), label: '', value: '' });
+      saveVault();
+      render();
+    }
   });
 
   document.getElementById('lockBtnTop').addEventListener('click', lockApp);
@@ -688,14 +1048,22 @@
     const now = new Date();
     const dateStr = now.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
     let html = `<h1>Bóveda — respaldo</h1><p class="print-date">Generado el ${dateStr}. Documento confidencial: contiene contraseñas en texto plano.</p>`;
-    if (vault.cards.length === 0) {
-      html += '<p>No hay tarjetas guardadas.</p>';
+    if (vault.folders.length === 0) {
+      html += '<p>No hay carpetas guardadas.</p>';
     } else {
-      vault.cards.forEach(card => {
-        html += `<div class="print-card"><h2>${escapeHtml(card.title || '(sin título)')}</h2>`;
-        card.rows.forEach(row => {
-          html += `<div class="print-row"><span class="lbl">${escapeHtml(row.label || '(campo)')}</span><span class="val">${escapeHtml(row.value)}</span></div>`;
-        });
+      vault.folders.forEach(folder => {
+        html += `<div class="print-folder"><div class="print-folder-name">${escapeHtml(folder.name || '(sin nombre)')}</div>`;
+        if (folder.cards.length === 0) {
+          html += '<p style="font-size:12px;color:#777;">Carpeta vacía.</p>';
+        } else {
+          folder.cards.forEach(card => {
+            html += `<div class="print-card"><h2>${escapeHtml(card.title || '(sin título)')}</h2>`;
+            card.rows.forEach(row => {
+              html += `<div class="print-row"><span class="lbl">${escapeHtml(row.label || '(campo)')}</span><span class="val">${escapeHtml(row.value)}</span></div>`;
+            });
+            html += '</div>';
+          });
+        }
         html += '</div>';
       });
     }
@@ -710,8 +1078,9 @@
     return d.innerHTML;
   }
 
-  document.getElementById('wipeBtn').addEventListener('click', () => {
-    if (confirm('Esto borrará TODAS las tarjetas y la contraseña maestra permanentemente. ¿Continuar?')) {
+  document.getElementById('wipeBtn').addEventListener('click', async () => {
+    const ok = await showConfirm('Se borrarán TODAS las carpetas, tarjetas y la contraseña maestra, de forma permanente.', 'Borrar toda la bóveda', 'Borrar todo');
+    if (ok) {
       localStorage.removeItem(LS_SALT);
       localStorage.removeItem(LS_VERIFY);
       localStorage.removeItem(LS_DATA);
